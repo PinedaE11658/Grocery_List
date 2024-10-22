@@ -1,0 +1,57 @@
+<!--By Eric Pineda-->
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <title>Grocery List</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 h-full grid place-items-center">
+    <div id="app" class="p-6 bg-white rounded-lg shadow-2xl">
+        <h1 class="text-4xl font-bold text-center text-sky-400">Grocery List</h1>
+        <div class="mb-4">
+            <label class="block mb-2 ">Grocery Item:</label>
+            <input v-model="newItem" type="text" class="w-full p-2 border border-gray-300 rounded shadow-lg">
+        </div>
+        <div class="mb-4">
+            <label class="block mb-2">Quantity:</label>
+            <input v-model="newQuantity" type="number" class="w-full p-2 border border-gray-300 rounded shadow-lg" min="1">
+        </div>
+        <button @click="addItem" class="bg-cyan-500 shadow-lg shadow-cyan-500/50 text-white font-bold py-2 px-4 rounded mb-4 w-full">Add Item</button>
+          <ul>
+            <li v-for="(item, index) in groceryList" :key="index" class="flex items-center justify-between py-2">
+                <div class>
+                    <span class="p-4">{{ item.name }}  (Quantity: {{ item.quantity }})</span>
+                </div>
+                <button @click="removeItem(index)" class="bg-red-500 shadow-lg shadow-red-500/50 text-white font-bold py-1 px-3 rounded">
+                  Remove</button>
+            </li>
+            </ul>
+    </div>
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    newItem: '',
+                    newQuantity: 0,
+                    groceryList: []
+                      };
+            },
+            methods: {
+                addItem(index) {
+                    if (this.newItem && this.newQuantity > 0) {
+                        this.groceryList.push({ name: this.newItem, quantity: this.newQuantity, done: false });
+                        this.newItem = '';
+                        this.newQuantity = 0;
+                    }
+                },
+                removeItem(index) {
+                    this.groceryList.splice(index, 1);
+                      }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
